@@ -124,55 +124,59 @@ export async function columnAdd(req: Request, res: Response<TableType>) {
   switch (colBody.uidt) {
     case UITypes.Rollup:
       {
-        validateParams(
-          [
-            'title',
-            'fk_relation_column_id',
-            'fk_rollup_column_id',
-            'rollup_function'
-          ],
-          req.body
-        );
-
-        const relation = await (
-          await Column.get({
-            colId: req.body.fk_relation_column_id
-          })
-        ).getColOptions<LinkToAnotherRecordType>();
-
-        if (!relation) {
-          throw new Error('Relation column not found');
-        }
-
-        let relatedColumn: Column;
-        switch (relation.type) {
-          case 'hm':
-            relatedColumn = await Column.get({
-              colId: relation.fk_child_column_id
-            });
-            break;
-          case 'mm':
-          case 'bt':
-            relatedColumn = await Column.get({
-              colId: relation.fk_parent_column_id
-            });
-            break;
-        }
-
-        const relatedTable = await relatedColumn.getModel();
-        if (
-          !(await relatedTable.getColumns()).find(
-            c => c.id === req.body.fk_rollup_column_id
-          )
-        )
-          throw new Error('Rollup column not found in related table');
-
-        await Column.insert({
-          ...colBody,
-          fk_model_id: table.id
-        });
+        console.log('CASE ROLLUP, ', colBody);
       }
       break;
+    //   {
+    //     validateParams(
+    //       [
+    //         'title',
+    //         'fk_relation_column_id',
+    //         'fk_rollup_column_id',
+    //         'rollup_function'
+    //       ],
+    //       req.body
+    //     );
+
+    //     const relation = await (
+    //       await Column.get({
+    //         colId: req.body.fk_relation_column_id
+    //       })
+    //     ).getColOptions<LinkToAnotherRecordType>();
+
+    //     if (!relation) {
+    //       throw new Error('Relation column not found');
+    //     }
+
+    //     let relatedColumn: Column;
+    //     switch (relation.type) {
+    //       case 'hm':
+    //         relatedColumn = await Column.get({
+    //           colId: relation.fk_child_column_id
+    //         });
+    //         break;
+    //       case 'mm':
+    //       case 'bt':
+    //         relatedColumn = await Column.get({
+    //           colId: relation.fk_parent_column_id
+    //         });
+    //         break;
+    //     }
+
+    //     const relatedTable = await relatedColumn.getModel();
+    //     if (
+    //       !(await relatedTable.getColumns()).find(
+    //         c => c.id === req.body.fk_rollup_column_id
+    //       )
+    //     )
+    //       throw new Error('Rollup column not found in related table');
+
+    //     await Column.insert({
+    //       ...colBody,
+    //       fk_model_id: table.id
+    //     });
+    //   }
+    //   break;
     case UITypes.Lookup:
       {
         validateParams(

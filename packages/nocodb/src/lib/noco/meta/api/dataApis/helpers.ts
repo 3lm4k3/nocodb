@@ -26,6 +26,7 @@ export async function getViewAndModelFromRequestByAliasOrId(
     base_id: project.bases?.[0]?.id,
     aliasOrId: req.params.tableName
   });
+  console.log('MODELLLL!!!!!: ', model);
   const view =
     req.params.viewName &&
     (await View.getByTitleOrId({

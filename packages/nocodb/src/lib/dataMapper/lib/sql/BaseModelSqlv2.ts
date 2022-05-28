@@ -167,6 +167,7 @@ class BaseModelSqlv2 {
     const { where, ...rest } = this._getListArgs(args as any);
 
     const qb = this.dbDriver(this.model.table_name);
+    // MHL this takes some time
     await this.selectObject({ qb });
 
     const aliasColObjMap = await this.model.getAliasColObjMap();
@@ -241,6 +242,7 @@ class BaseModelSqlv2 {
     if (!ignoreFilterSort) applyPaginate(qb, rest);
     const proto = await this.getProto();
 
+    // MH: this takes some time
     const data = await this.extractRawQueryAndExec(qb);
 
     return data?.map(d => {
@@ -1194,7 +1196,7 @@ class BaseModelSqlv2 {
         case 'LinkToAnotherRecord':
         case 'Lookup':
           break;
-        case 'Formula':
+        case 'Formula': // MH: this parts we can edit to use select statements directly
           {
             const formula = await column.getColOptions<FormulaColumn>();
             if (formula.error) continue;

@@ -103,6 +103,7 @@ async function getDataList(model, view: View, req) {
     listArgs.sortArr = JSON.parse(listArgs.sortArrJson);
   } catch (e) {}
 
+  // MH: this takes the most time
   const data = await nocoExecute(
     requestObj,
     await baseModel.list(listArgs),

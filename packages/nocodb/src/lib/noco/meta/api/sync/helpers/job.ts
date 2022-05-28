@@ -103,6 +103,7 @@ export default async (
   //
 
   async function getAirtableSchema(sDB) {
+    console.log('getAirtableSchema!!!!!', sDB);
     const start = Date.now();
     if (sDB.shareId.startsWith('exp')) {
       const template = await FetchAT.readTemplate(sDB.shareId);
@@ -1871,6 +1872,7 @@ export default async (
 
     logBasic('Retrieving Airtable schema');
     // read schema file
+    console.log('syncDB!!!! ', syncDB);
     const schema = await getAirtableSchema(syncDB);
     const aTblSchema = schema.tableSchemas;
     logDetailed('Project schema extraction completed');
